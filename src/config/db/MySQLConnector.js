@@ -5,13 +5,13 @@ class MySQLConnector {
         return process.env.MYSQL_DB_USER || 'root';
     }
     get MYSQL_DB_PASSWORD() {
-        return process.env.MYSQL_DB_PASSWORD || 'Password123';
+        return process.env.MYSQL_DB_PASSWORD || 'root';
     }
     get MYSQL_DB_HOST() {
         return process.env.MYSQL_DB_HOST || 'localhost';
     }
     get MYSQL_DB_NAME() {
-        return process.env.MYSQL_DB_NAME || 'meetx';
+        return process.env.MYSQL_DB_NAME || 'sidekliq';
     }
     get MYSQL_DB_POOL_SIZE() {
         return process.env.MYSQL_DB_POOL_SIZE || 10;

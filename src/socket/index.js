@@ -33,12 +33,12 @@ export default (io, client) => ({
 
         chats = await Promise.all(chats.map(async (c, index) => {
             if (c.sender_id == user_id) {
-                const q = `SELECT username, profile_image as avatar FROM ${TABLES.TABLE_USER} WHERE id = ?`;
+                const q = `SELECT handle, avatar FROM ${TABLES.TABLE_USER} WHERE id = ?`;
                 const users = await DAO.runQuery(q, { id: c.receiver_id });
                 return Object.assign(c, users[0]);
             }
 
-            const q = `SELECT username, profile_image as avatar FROM ${TABLES.TABLE_USER} WHERE id = ?`;
+            const q = `SELECT handle, avatar FROM ${TABLES.TABLE_USER} WHERE id = ?`;
             const users = await DAO.runQuery(q, { id: c.sender_id });
             return Object.assign({ ...c, sender_id: c.receiver_id, receiver_id: c.sender_id }, users[0]);
         }))
@@ -96,8 +96,8 @@ export default (io, client) => ({
             message,
             sender_id,
             receiver_id,
-            created_date: new Date(),
             chat_id: Array.isArray(chat) && chat.length <= 0 ? newChatId : chat_id,
+            created_date: new Date(),
         }
         await DAO.runQuery(q, insertData);
 
