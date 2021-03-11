@@ -1,0 +1,91 @@
+-- phpMyAdmin SQL Dump
+-- version 4.1.14
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Jun 20, 2020 at 09:30 AM
+-- Server version: 5.5.32
+-- PHP Version: 5.5.12
+
+--
+-- Database: `graphql_mysql_server`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE IF NOT EXISTS `users` (
+`id` INT(11) NOT NULL AUTO_INCREMENT,
+`username` VARCHAR(50) DEFAULT '',
+`firstName` VARCHAR(40) NOT NULL DEFAULT '',
+`lastName` VARCHAR(40) NOT NULL DEFAULT '',
+`email` VARCHAR(30) NOT NULL,
+`password` VARCHAR(255) DEFAULT NULL,
+`profileImage` varchar(255) DEFAULT NULL,
+`guid` VARCHAR(100) DEFAULT NULL,
+`deviceType` VARCHAR(7) DEFAULT NULL COMMENT '1-iOS, 2-Android, 3-web',
+`deviceToken` TEXT DEFAULT NULL,
+`isVerified` TINYINT(1) DEFAULT NULL,
+`createdDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+`updatedDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+`isActive` TINYINT(1) NOT NULL DEFAULT 1,
+`isDelete` TINYINT(1) NOT NULL DEFAULT 0,
+`isTestdata` TINYINT(1) NOT NULL DEFAULT 1,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_config`
+--
+
+CREATE TABLE IF NOT EXISTS `admin_config` (
+`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+`configKey` varchar(40) NOT NULL,
+`configValue` varchar(200) NOT NULL,
+`valueUnit` varchar(20) NOT NULL,
+`createdDate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+`modifiedDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+`isDelete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Will be used for soft delete of record.',
+`isTestdata` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Will help identify dirty data added during testing and live data',
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `admin_config`
+--
+
+INSERT INTO `admin_config` (`id`, `configKey`, `configValue`, `valueUnit`, `createdDate`, `modifiedDate`, `isDelete`, `isTestdata`) VALUES
+(1, 'globalPassword', '(graphqlmysql)(graphqlmysql)20/06/2020', 'text', '2020-06-02 11:22:04', '2017-09-14 05:52:04', 0, 1),
+(2, 'userAgent', 'iOS,Android,Mozilla/5.0,PostmanRuntime/2.5.0\r\n', 'comma-separated', '2017-09-14 11:22:04', '2017-09-14 05:52:04', 0, 1),
+(3, 'tempToken', 'allowAccessToApp', 'text', '2017-09-14 11:22:04', '2017-09-14 05:52:04', 0, 1),
+(4, 'expiryDuration', '3600', 'second', '2017-09-14 11:22:04', '2017-09-14 05:52:04', 0, 1),
+(5, 'autologout', '1', 'boolean', '2017-09-14 11:22:04', '2017-09-14 05:52:04', 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `app_tokens`
+--
+
+CREATE TABLE IF NOT EXISTS `app_tokens` (
+`userId` int(11) unsigned NOT NULL,
+`token` varchar(200) DEFAULT '',
+`tokenType` enum('access_token') NOT NULL DEFAULT 'access_token',
+`deviceToken` VARCHAR(200) DEFAULT NULL,
+`deviceType` VARCHAR(200) DEFAULT NULL,
+`status` enum('active','expired') NOT NULL DEFAULT 'active',
+`expiry` varchar(30) DEFAULT '',
+`accessCount` int(11) DEFAULT NULL,
+`createdDate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+`modifiedDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+`isDelete` tinyint(1) NOT NULL DEFAULT '0',
+`isTestdata` tinyint(1) NOT NULL DEFAULT '1',
+PRIMARY KEY (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
